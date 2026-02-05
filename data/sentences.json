@@ -1,0 +1,68 @@
+{
+  "sentences": [
+    {
+      "id": "s001",
+      "content": "人生如逆旅，我亦是行人。",
+      "author": "苏轼",
+      "source": "《临江仙·送钱穆父》",
+      "tags": ["classical", "philosophy"],
+      "likes": 892,
+      "date_added": "2024-01-08T10:00:00Z",
+      "mood": "感慨"
+    },
+    {
+      "id": "s002", 
+      "content": "愿你出走半生，归来仍是少年。",
+      "author": "孙光曼",
+      "source": "《愿你走出半生，归来仍是少年》",
+      "tags": ["modern", "life"],
+      "likes": 234,
+      "date_added": "2024-01-10T15:30:00Z",
+      "mood": "温暖"
+    },
+    {
+      "id": "s003",
+      "content": "满地都是六便士，他却抬头看见了月亮。",
+      "author": "毛姆",
+      "source": "《月亮与六便士》",
+      "tags": ["modern", "philosophy"],
+      "likes": 567,
+      "date_added": "2024-01-05T09:15:00Z",
+      "mood": "哲思"
+    },
+    {
+      "id": "s004",
+      "content": "曾经沧海难为水，除却巫山不是云。",
+      "author": "元稹", 
+      "source": "《离思五首·其四》",
+      "tags": ["classical", "love"],
+      "likes": 445,
+      "date_added": "2024-01-03T14:20:00Z",
+      "mood": "深情"
+    },
+    {
+      "id": "s005",
+      "content": "生活不是等待暴风雨过去，而是学会在雨中跳舞。",
+      "author": "维维安·格林",
+      "source": "",
+      "tags": ["modern", "life"],
+      "likes": 123,
+      "date_added": "2024-01-02T11:45:00Z",
+      "mood": "励志"
+    },
+    {
+      "id": "s006",
+      "content": "人生若只如初见，何事秋风悲画扇。",
+      "author": "纳兰性德",
+      "source": "《木兰花令·拟古决绝词》",
+      "tags": ["classical", "love"],
+      "likes": 778,
+      "date_added": "2024-01-01T16:00:00Z",
+      "mood": "伤感"
+    }
+  ],
+  "metadata": {
+    "total": 6,
+    "last_updated": "2024-01-20T12:00:00Z"
+  }
+}

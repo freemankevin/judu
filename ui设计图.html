@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>句读 | 文字之美</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Noto Serif SC"', 'serif'],
+                        sans: ['"Noto Sans SC"', 'sans-serif'],
+                    },
+                    colors: {
+                        paper: {
+                            50: '#fdfbf7',
+                            100: '#f7f3e9',
+                            200: '#efe5d0',
+                            300: '#e6d2b3',
+                            400: '#d9b88a',
+                            500: '#cc9c66',
+                        },
+                        ink: {
+                            50: '#f6f6f6',
+                            100: '#e7e7e7',
+                            200: '#d1d1d1',
+                            300: '#b0b0b0',
+                            400: '#888888',
+                            500: '#6d6d6d',
+                            600: '#5d5d5d',
+                            700: '#4f4f4f',
+                            800: '#454545',
+                            900: '#2d2d2d',
+                            950: '#1a1a1a',
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'hover': '0 12px 40px -8px rgba(0, 0, 0, 0.12)',
+                        'glow': '0 0 40px rgba(0, 0, 0, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d1d1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b0b0b0;
+        }
+        
+        /* 墨迹动画效果 */
+        @keyframes inkSpread {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 0.1; }
+        }
+        
+        .ink-bg::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,0,0,0.08) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            animation: inkSpread 2s ease-out;
+            pointer-events: none;
+        }
+        
+        /* 文字选中效果 */
+        ::selection {
+            background: rgba(139, 69, 19, 0.2);
+            color: inherit;
+        }
+        
+        /* 卡片悬浮动画 */
+        .sentence-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .sentence-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        /* 打字光标 */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        /* 加载动画 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 隐藏搜索清除按钮 */
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration { display: none; }
+    </style>
+</head>
+<body class="bg-paper-50 text-ink-900 font-sans antialiased transition-colors duration-300 dark:bg-ink-950 dark:text-paper-100">
+
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-paper-50/80 backdrop-blur-md border-b border-ink-200/50 dark:bg-ink-950/80 dark:border-ink-800 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-8 h-8 bg-ink-900 dark:bg-paper-100 rounded-lg flex items-center justify-center">
+                        <span class="text-paper-50 dark:text-ink-900 font-serif font-bold text-lg">句</span>
+                    </div>
+                    <span class="font-serif text-xl font-medium tracking-wide">句读</span>
+                </div>
+
+                <!-- 搜索框 -->
+                <div class="hidden md:flex flex-1 max-w-md mx-8">
+                    <div class="relative w-full group">
+                        <input type="search" 
+                               placeholder="搜索句子、作者或标签..." 
+                               class="w-full pl-10 pr-4 py-2 bg-white dark:bg-ink-900 border border-ink-200 dark:border-ink-700 rounded-full text-sm focus:outline-none focus:border-ink-400 dark:focus:border-paper-400 focus:ring-2 focus:ring-ink-100 dark:focus:ring-ink-800 transition-all"
+                               id="searchInput">
+                        <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 group-focus-within:text-ink-600 dark:group-focus-within:text-paper-400 transition-colors"></i>
+                    </div>
+                </div>
+
+                <!-- 右侧操作 -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-ink-100 dark:hover:bg-ink-800 transition-colors" aria-label="切换主题">
+                        <i class="fas fa-moon dark:hidden text-ink-600"></i>
+                        <i class="fas fa-sun hidden dark:block text-paper-300"></i>
+                    </button>
+                    
+                    <button onclick="showAddModal()" class="hidden sm:flex items-center space-x-2 px-4 py-2 bg-ink-900 dark:bg-paper-100 text-paper-50 dark:text-ink-900 rounded-full text-sm font-medium hover:shadow-lg hover:scale-105 transition-all">
+                        <i class="fas fa-plus text-xs"></i>
+                        <span>收录句子</span>
+                    </button>
+                    
+                    <button onclick="showMobileMenu()" class="md:hidden p-2 rounded-lg hover:bg-ink-100 dark:hover:bg-ink-800">
+                        <i class="fas fa-bars text-ink-600 dark:text-paper-300"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 移动端搜索 -->
+        <div class="md:hidden px-4 pb-3 hidden" id="mobileSearch">
+            <div class="relative">
+                <input type="search" 
+                       placeholder="搜索..." 
+                       class="w-full pl-10 pr-4 py-2 bg-white dark:bg-ink-900 border border-ink-200 dark:border-ink-700 rounded-lg text-sm">
+                <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主体内容 -->
+    <main class="pt-24 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        
+        <!-- 每日一句 Hero Section -->
+        <section class="relative mb-16" id="daily-section">
+            <div class="bg-white dark:bg-ink-900 rounded-3xl p-8 md:p-16 shadow-soft relative overflow-hidden min-h-[400px] flex items-center justify-center">
+                <!-- 装饰背景 -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-paper-200/50 to-transparent dark:from-ink-800/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                <div class="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-paper-300/30 to-transparent dark:from-ink-800/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+                
+                <div class="relative z-10 text-center max-w-3xl mx-auto">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 bg-paper-100 dark:bg-ink-800 rounded-full text-xs text-ink-600 dark:text-paper-400 mb-8">
+                        <i class="fas fa-calendar-day"></i>
+                        <span>每日一句</span>
+                        <span class="w-1 h-1 bg-ink-400 rounded-full"></span>
+                        <span id="currentDate">2024年1月15日</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <h1 class="font-serif text-3xl md:text-5xl font-medium leading-relaxed text-ink-900 dark:text-paper-50 tracking-wide typing-cursor" id="dailyQuote">
+                            人生如逆旅，我亦是行人。
+                        </h1>
+                        
+                        <div class="flex items-center justify-center space-x-4 text-ink-500 dark:text-paper-400">
+                            <span class="w-12 h-px bg-ink-300 dark:bg-ink-700"></span>
+                            <p class="font-serif text-lg" id="dailyAuthor">苏轼</p>
+                            <span class="text-sm">《临江仙·送钱穆父》</span>
+                            <span class="w-12 h-px bg-ink-300 dark:bg-ink-700"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-10 flex items-center justify-center space-x-4">
+                        <button onclick="refreshDaily()" class="p-3 rounded-full bg-paper-100 dark:bg-ink-800 text-ink-600 dark:text-paper-300 hover:bg-paper-200 dark:hover:bg-ink-700 transition-all hover:rotate-180 duration-500" title="换一句">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button onclick="copyDaily()" class="px-6 py-3 rounded-full bg-ink-900 dark:bg-paper-100 text-paper-50 dark:text-ink-900 font-medium hover:shadow-hover transition-all flex items-center space-x-2 group">
+                            <i class="fas fa-copy group-hover:scale-110 transition-transform"></i>
+                            <span>复制句子</span>
+                        </button>
+                        <button onclick="shareDaily()" class="p-3 rounded-full bg-paper-100 dark:bg-ink-800 text-ink-600 dark:text-paper-300 hover:bg-paper-200 dark:hover:bg-ink-700 transition-all">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 分类筛选 -->
+        <section class="mb-10 sticky top-20 z-40 bg-paper-50/95 dark:bg-ink-950/95 backdrop-blur-sm py-4 -mx-4 px-4 sm:mx-0 sm:px-0 sm:rounded-xl transition-all" id="filterBar">
+            <div class="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-hide">
+                <button onclick="filterCategory('all')" class="filter-btn active px-4 py-2 rounded-full text-sm font-medium bg-ink-900 dark:bg-paper-100 text-paper-50 dark:text-ink-900 whitespace-nowrap transition-all" data-category="all">
+                    全部
+                </button>
+                <button onclick="filterCategory('classical')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-white dark:bg-ink-900 border border-ink-200 dark:border-ink-700 text-ink-600 dark:text-paper-300 hover:border-ink-400 dark:hover:border-paper-400 whitespace-nowrap transition-all" data-category="classical">
+                    <i class="fas fa-scroll mr-1"></i>古典
+                </button>
+                <button onclick="filterCategory('modern')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-white dark:bg-ink-900 border border-ink-200 dark:border-ink-700 text-ink-600 dark:text-paper-300 hover:border-ink-400 dark:hover:border-paper-400 whitespace-nowrap transition-all" data-category="modern">
+                    <i class="fas fa-feather mr-1"></i>现代
+                </button>
+                <button onclick="filterCategory('love')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-white dark:bg-ink-900 border border-ink-200 dark:border-ink-700 text-ink-600 dark:text-paper-300 hover:border-ink-400 dark:hover:border-paper-400 whitespace-nowrap transition-all" data-category="love">
+                    <i class="fas fa-heart mr-1"></i>情感
+                </button>
+                <button onclick="filterCategory('philosophy')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-white dark:bg-ink-900 border border-ink-200 dark:border-ink-700 text-ink-600 dark:text-paper-300 hover:border-ink-400 dark:hover:border-paper-400 whitespace-nowrap transition-all" data-category="philosophy">
+                    <i class="fas fa-lightbulb mr-1"></i>哲思
+                </button>
+                <button onclick="filterCategory('movie')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-white dark:bg-ink-900 border border-ink-200 dark:border-ink-700 text-ink-600 dark:text-paper-300 hover:border-ink-400 dark:hover:border-paper-400 whitespace-nowrap transition-all" data-category="movie">
+                    <i class="fas fa-film mr-1"></i>影视
+                </button>
+                <button onclick="showAllTags()" class="px-4 py-2 rounded-full text-sm font-medium text-ink-400 hover:text-ink-600 dark:hover:text-paper-200 whitespace-nowrap transition-all">
+                    更多 <i class="fas fa-chevron-down text-xs"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 句子网格 -->
+        <section id="sentencesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            <!-- 卡片由JS动态生成 -->
+        </section>
+
+        <!-- 加载更多 -->
+        <div class="text-center">
+            <button onclick="loadMore()" class="px-8 py-3 rounded-full border-2 border-ink-300 dark:border-ink-600 text-ink-600 dark:text-paper-400 font-medium hover:bg-ink-900 hover:text-paper-50 hover:border-ink-900 dark:hover:bg-paper-100 dark:hover:text-ink-900 dark:hover:border-paper-100 transition-all">
+                加载更多
+            </button>
+        </div>
+
+        <!-- GitHub 评论区域 -->
+        <section class="mt-20 pt-10 border-t border-ink-200 dark:border-ink-800">
+            <div class="text-center mb-8">
+                <h3 class="font-serif text-2xl font-medium mb-2">留言板</h3>
+                <p class="text-ink-500 dark:text-paper-400 text-sm">基于 GitHub Discussions 的评论系统</p>
+            </div>
+            <div class="bg-white dark:bg-ink-900 rounded-2xl p-8 shadow-soft">
+                <!-- 这里会嵌入 giscus 或 utterances -->
+                <div class="flex flex-col items-center justify-center py-12 text-ink-400 dark:text-paper-500 space-y-4">
+                    <i class="fab fa-github text-4xl"></i>
+                    <p>评论系统加载中...</p>
+                    <p class="text-sm">需要登录 GitHub 账号参与讨论</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-white dark:bg-ink-900 border-t border-ink-200 dark:border-ink-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+                <div class="flex items-center space-x-2">
+                    <div class="w-6 h-6 bg-ink-900 dark:bg-paper-100 rounded flex items-center justify-center">
+                        <span class="text-paper-50 dark:text-ink-900 font-serif text-xs font-bold">句</span>
+                    </div>
+                    <span class="font-serif font-medium">句读</span>
+                    <span class="text-ink-400 dark:text-paper-500 text-sm">|</span>
+                    <span class="text-ink-400 dark:text-paper-500 text-sm">文字收藏与分享</span>
+                </div>
+                
+                <div class="flex items-center space-x-6 text-sm text-ink-500 dark:text-paper-400">
+                    <a href="#" class="hover:text-ink-900 dark:hover:text-paper-100 transition-colors">GitHub</a>
+                    <a href="#" class="hover:text-ink-900 dark:hover:text-paper-100 transition-colors">数据接口</a>
+                    <a href="#" class="hover:text-ink-900 dark:hover:text-paper-100 transition-colors">关于</a>
+                </div>
+                
+                <p class="text-xs text-ink-400 dark:text-paper-600">
+                    © 2024 句读. 数据存储于 GitHub.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 添加句子模态框 -->
+    <div id="addModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-ink-900/50 backdrop-blur-sm transition-opacity" onclick="closeAddModal()"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+            <div class="bg-white dark:bg-ink-900 rounded-2xl shadow-2xl max-w-lg w-full p-6 pointer-events-auto transform scale-100 transition-transform">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="font-serif text-xl font-medium">收录新句子</h3>
+                    <button onclick="closeAddModal()" class="p-2 hover:bg-ink-100 dark:hover:bg-ink-800 rounded-lg transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form class="space-y-4" onsubmit="submitSentence(event)">
+                    <div>
+                        <label class="block text-sm font-medium text-ink-600 dark:text-paper-400 mb-2">句子内容</label>
+                        <textarea class="w-full p-3 border border-ink-200 dark:border-ink-700 rounded-lg bg-paper-50 dark:bg-ink-950 focus:ring-2 focus:ring-ink-200 dark:focus:ring-ink-700 focus:outline-none resize-none" rows="3" placeholder="请输入你想收藏的句子..." required></textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-ink-600 dark:text-paper-400 mb-2">作者</label>
+                            <input type="text" class="w-full p-3 border border-ink-200 dark:border-ink-700 rounded-lg bg-paper-50 dark:bg-ink-950 focus:ring-2 focus:ring-ink-200 dark:focus:ring-ink-700 focus:outline-none" placeholder="作者姓名">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-ink-600 dark:text-paper-400 mb-2">出处</label>
+                            <input type="text" class="w-full p-3 border border-ink-200 dark:border-ink-700 rounded-lg bg-paper-50 dark:bg-ink-950 focus:ring-2 focus:ring-ink-200 dark:focus:ring-ink-700 focus:outline-none" placeholder="书名/电影/歌曲等">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-ink-600 dark:text-paper-400 mb-2">标签</label>
+                        <div class="flex flex-wrap gap-2">
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="peer hidden">
+                                <span class="px-3 py-1 rounded-full text-sm border border-ink-200 dark:border-ink-700 peer-checked:bg-ink-900 peer-checked:text-paper-50 dark:peer-checked:bg-paper-100 dark:peer-checked:text-ink-900 peer-checked:border-transparent transition-all">古典</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="peer hidden">
+                                <span class="px-3 py-1 rounded-full text-sm border border-ink-200 dark:border-ink-700 peer-checked:bg-ink-900 peer-checked:text-paper-50 dark:peer-checked:bg-paper-100 dark:peer-checked:text-ink-900 peer-checked:border-transparent transition-all">现代</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="peer hidden">
+                                <span class="px-3 py-1 rounded-full text-sm border border-ink-200 dark:border-ink-700 peer-checked:bg-ink-900 peer-checked:text-paper-50 dark:peer-checked:bg-paper-100 dark:peer-checked:text-ink-900 peer-checked:border-transparent transition-all">情感</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="peer hidden">
+                                <span class="px-3 py-1 rounded-full text-sm border border-ink-200 dark:border-ink-700 peer-checked:bg-ink-900 peer-checked:text-paper-50 dark:peer-checked:bg-paper-100 dark:peer-checked:text-ink-900 peer-checked:border-transparent transition-all">哲思</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4 flex items-center justify-end space-x-3">
+                        <button type="button" onclick="closeAddModal()" class="px-4 py-2 text-ink-600 dark:text-paper-400 hover:bg-ink-100 dark:hover:bg-ink-800 rounded-lg transition-colors">取消</button>
+                        <button type="submit" class="px-6 py-2 bg-ink-900 dark:bg-paper-100 text-paper-50 dark:text-ink-900 rounded-lg font-medium hover:shadow-lg transition-all">
+                            提交到 GitHub
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提示消息 -->
+    <div id="toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-ink-900 dark:bg-paper-100 text-paper-50 dark:text-ink-900 px-6 py-3 rounded-full shadow-2xl flex items-center space-x-3 opacity-0 pointer-events-none transition-all duration-300 z-50">
+        <i class="fas fa-check-circle text-green-400 dark:text-green-600"></i>
+        <span id="toastMessage">操作成功</span>
+    </div>
+
+    <script>
+        // 模拟数据
+        const sentences = [
+            {
+                id: 1,
+                content: "愿你出走半生，归来仍是少年。",
+                author: "孙光曼",
+                source: "《愿你走出半生，归来仍是少年》",
+                tags: ["modern", "life"],
+                likes: 234,
+                date: "2024-01-10"
+            },
+            {
+                id: 2,
+                content: "人生如逆旅，我亦是行人。",
+                author: "苏轼",
+                source: "《临江仙·送钱穆父》",
+                tags: ["classical", "philosophy"],
+                likes: 892,
+                date: "2024-01-08"
+            },
+            {
+                id: 3,
+                content: "满地都是六便士，他却抬头看见了月亮。",
+                author: "毛姆",
+                source: "《月亮与六便士》",
+                tags: ["modern", "philosophy"],
+                likes: 567,
+                date: "2024-01-05"
+            },
+            {
+                id: 4,
+                content: "曾经沧海难为水，除却巫山不是云。",
+                author: "元稹",
+                source: "《离思五首·其四》",
+                tags: ["classical", "love"],
+                likes: 445,
+                date: "2024-01-03"
+            },
+            {
+                id: 5,
+                content: "生活不是等待暴风雨过去，而是学会在雨中跳舞。",
+                author: "维维安·格林",
+                source: "",
+                tags: ["modern", "life"],
+                likes: 123,
+                date: "2024-01-02"
+            },
+            {
+                id: 6,
+                content: "人生若只如初见，何事秋风悲画扇。",
+                author: "纳兰性德",
+                source: "《木兰花令·拟古决绝词》",
+                tags: ["classical", "love"],
+                likes: 778,
+                date: "2024-01-01"
+            }
+        ];
+
+        let currentCategory = 'all';
+        let filteredSentences = [...sentences];
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSentences();
+            updateDate();
+            initTheme();
+            
+            // 搜索监听
+            document.getElementById('searchInput').addEventListener('input', handleSearch);
+        });
+
+        // 渲染句子卡片
+        function renderSentences() {
+            const grid = document.getElementById('sentencesGrid');
+            grid.innerHTML = filteredSentences.map(sentence => `
+                <article class="sentence-card bg-white dark:bg-ink-900 rounded-2xl p-6 shadow-soft hover:shadow-hover relative group cursor-pointer border border-transparent hover:border-ink-200 dark:hover:border-ink-700" onclick="copyToClipboard('${sentence.content.replace(/'/g, "\\'")}')">
+                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button class="p-2 rounded-full bg-paper-100 dark:bg-ink-800 text-ink-600 dark:text-paper-300 hover:bg-paper-200 dark:hover:bg-ink-700" onclick="event.stopPropagation(); copyToClipboard('${sentence.content.replace(/'/g, "\\'")}')" title="复制">
+                            <i class="fas fa-copy text-sm"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <i class="fas fa-quote-left text-2xl text-paper-400 dark:text-ink-700"></i>
+                    </div>
+                    
+                    <p class="font-serif text-lg leading-relaxed text-ink-900 dark:text-paper-50 mb-6 line-clamp-4">
+                        ${sentence.content}
+                    </p>
+                    
+                    <div class="flex items-center justify-between pt-4 border-t border-ink-100 dark:border-ink-800">
+                        <div class="flex flex-col">
+                            <span class="font-medium text-sm text-ink-800 dark:text-paper-200"> ${sentence.author}</span>
+                            ${sentence.source ? `<span class="text-xs text-ink-500 dark:text-paper-500 truncate max-w-[150px]">${sentence.source}</span>` : ''}
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <button class="flex items-center space-x-1 text-ink-400 dark:text-paper-500 hover:text-red-500 dark:hover:text-red-400 transition-colors" onclick="event.stopPropagation(); toggleLike(this, ${sentence.id})">
+                                <i class="far fa-heart"></i>
+                                <span class="text-xs">${sentence.likes}</span>
+                            </button>
+                            <button class="text-ink-400 dark:text-paper-500 hover:text-ink-600 dark:hover:text-paper-300" onclick="event.stopPropagation(); shareSentence(${sentence.id})">
+                                <i class="fas fa-share-alt text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        ${sentence.tags.map(tag => `
+                            <span class="text-xs px-2 py-1 rounded-md bg-paper-100 dark:bg-ink-800 text-ink-600 dark:text-paper-400">
+                                ${getTagLabel(tag)}
+                            </span>
+                        `).join('')}
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // 获取标签中文名
+        function getTagLabel(tag) {
+            const labels = {
+                classical: '古典',
+                modern: '现代',
+                love: '情感',
+                philosophy: '哲思',
+                life: '生活',
+                movie: '影视'
+            };
+            return labels[tag] || tag;
+        }
+
+        // 筛选分类
+        function filterCategory(category) {
+            currentCategory = category;
+            
+            // 更新按钮状态
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.category === category) {
+                    btn.classList.add('bg-ink-900', 'dark:bg-paper-100', 'text-paper-50', 'dark:text-ink-900');
+                    btn.classList.remove('bg-white', 'dark:bg-ink-900', 'text-ink-600', 'dark:text-paper-300', 'border', 'border-ink-200', 'dark:border-ink-700');
+                } else {
+                    btn.classList.remove('bg-ink-900', 'dark:bg-paper-100', 'text-paper-50', 'dark:text-ink-900');
+                    btn.classList.add('bg-white', 'dark:bg-ink-900', 'text-ink-600', 'dark:text-paper-300', 'border', 'border-ink-200', 'dark:border-ink-700');
+                }
+            });
+            
+            // 筛选数据
+            if (category === 'all') {
+                filteredSentences = [...sentences];
+            } else {
+                filteredSentences = sentences.filter(s => s.tags.includes(category));
+            }
+            
+            // 如果有搜索词，继续过滤
+            const searchTerm = document.getElementById('searchInput').value;
+            if (searchTerm) {
+                filteredSentences = filteredSentences.filter(s => 
+                    s.content.includes(searchTerm) || 
+                    s.author.includes(searchTerm)
+                );
+            }
+            
+            renderSentences();
+            
+            // 滚动到内容区
+            document.getElementById('sentencesGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // 搜索处理
+        function handleSearch(e) {
+            const term = e.target.value.toLowerCase();
+            if (!term) {
+                filterCategory(currentCategory);
+                return;
+            }
+            
+            filteredSentences = sentences.filter(s => 
+                (currentCategory === 'all' || s.tags.includes(currentCategory)) &&
+                (s.content.toLowerCase().includes(term) || 
+                 s.author.toLowerCase().includes(term) ||
+                 s.source.toLowerCase().includes(term))
+            );
+            renderSentences();
+        }
+
+        // 复制功能
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast('已复制到剪贴板');
+                
+                // 添加点击动画
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0) selection.removeAllRanges();
+            } catch (err) {
+                showToast('复制失败，请手动复制');
+            }
+        }
+
+        function copyDaily() {
+            const quote = document.getElementById('dailyQuote').textContent.trim();
+            copyToClipboard(quote);
+        }
+
+        // 分享功能
+        function shareSentence(id) {
+            const sentence = sentences.find(s => s.id === id);
+            if (navigator.share) {
+                navigator.share({
+                    title: '句读 - 文字之美',
+                    text: `${sentence.content} —— ${sentence.author}`,
+                    url: window.location.href
+                });
+            } else {
+                copyToClipboard(`${sentence.content} —— ${sentence.author}`);
+                showToast('内容已复制，可直接分享');
+            }
+        }
+
+        function shareDaily() {
+            const quote = document.getElementById('dailyQuote').textContent.trim();
+            const author = document.getElementById('dailyAuthor').textContent.trim();
+            if (navigator.share) {
+                navigator.share({
+                    title: '每日一句 | 句读',
+                    text: `${quote} —— ${author}`,
+                    url: window.location.href
+                });
+            }
+        }
+
+        // 点赞功能
+        function toggleLike(btn, id) {
+            const icon = btn.querySelector('i');
+            const count = btn.querySelector('span');
+            
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas', 'text-red-500');
+                count.textContent = parseInt(count.textContent) + 1;
+                btn.classList.add('text-red-500');
+            } else {
+                icon.classList.remove('fas', 'text-red-500');
+                icon.classList.add('far');
+                count.textContent = parseInt(count.textContent) - 1;
+                btn.classList.remove('text-red-500');
+            }
+        }
+
+        // 刷新每日一句
+        function refreshDaily() {
+            const quotes = [
+                { content: "且将新火试新茶，诗酒趁年华。", author: "苏轼", source: "《望江南·超然台作》" },
+                { content: "醉后不知天在水，满船清梦压星河。", author: "唐温如", source: "《题龙阳县青草湖》" },
+                { content: "欲买桂花同载酒，终不似，少年游。", author: "刘过", source: "《唐多令·芦叶满汀洲》" },
+                { content: "世界上只有一种英雄主义，就是在认清生活真相之后依然热爱生活。", author: "罗曼·罗兰", source: "《米开朗基罗传》" }
+            ];
+            
+            const random = quotes[Math.floor(Math.random() * quotes.length)];
+            const quoteEl = document.getElementById('dailyQuote');
+            const authorEl = document.getElementById('dailyAuthor');
+            
+            // 淡出动画
+            quoteEl.style.opacity = '0';
+            authorEl.style.opacity = '0';
+            
+            setTimeout(() => {
+                quoteEl.textContent = random.content;
+                authorEl.innerHTML = `${random.author} <span class="text-sm text-ink-500 dark:text-paper-400">《${random.source.replace(/[《》]/g, '')}》</span>`;
+                
+                // 淡入动画
+                quoteEl.style.opacity = '1';
+                authorEl.style.opacity = '1';
+            }, 300);
+        }
+
+        // 主题切换
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        function initTheme() {
+            const saved = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (saved === 'dark' || (!saved && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            }
+        }
+
+        // 模态框控制
+        function showAddModal() {
+            document.getElementById('addModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function submitSentence(e) {
+            e.preventDefault();
+            closeAddModal();
+            showToast('已提交至 GitHub（演示模式）');
+        }
+
+        // Toast 提示
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+            
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        // 更新日期
+        function updateDate() {
+            const date = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('zh-CN', options);
+        }
+
+        // 加载更多
+        function loadMore() {
+            showToast('已加载更多句子（演示模式）');
+        }
+
+        // 显示所有标签
+        function showAllTags() {
+            showToast('标签选择器开发中...');
+        }
+
+        // 导航栏滚动效果
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                navbar.classList.add('shadow-sm');
+            } else {
+                navbar.classList.remove('shadow-sm');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // 移动端菜单（简化版）
+        function showMobileMenu() {
+            const mobileSearch = document.getElementById('mobileSearch');
+            mobileSearch.classList.toggle('hidden');
+        }
+
+        // ESC 关闭模态框
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAddModal();
+        });
+    </script>
+</body>
+</html>

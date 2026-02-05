@@ -1,0 +1,65 @@
+name: 收录新句子
+ description: 提交一个新的句子到句读收藏
+ title: "[句子收录] "
+ labels: ["sentence", "new"]
+ body:
+   - type: markdown
+     attributes:
+       value: |
+         感谢您为句读贡献新的句子！请填写以下信息：
+   
+   - type: textarea
+     id: content
+     attributes:
+       label: 句子内容
+       description: 请输入您想收藏的句子
+       placeholder: "例如：人生如逆旅，我亦是行人。"
+     validations:
+       required: true
+   
+   - type: input
+     id: author
+     attributes:
+       label: 作者
+       description: 句子的原作者
+       placeholder: "例如：苏轼"
+     validations:
+       required: true
+   
+   - type: input
+     id: source
+     attributes:
+       label: 出处
+       description: 句子的来源（书名、电影、歌曲等）
+       placeholder: "例如：《临江仙·送钱穆父》"
+   
+   - type: dropdown
+     id: category
+     attributes:
+       label: 分类
+       description: 选择句子的分类
+       options:
+         - 古典
+         - 现代
+         - 情感
+         - 哲思
+         - 影视
+         - 生活
+         - 其他
+   
+   - type: textarea
+     id: notes
+     attributes:
+       label: 备注
+       description: 可选，添加您对这句子的理解或感想
+       placeholder: "这句子的意境很美..."
+   
+   - type: checkboxes
+     id: terms
+     attributes:
+       label: 确认
+       options:
+         - label: 我确认这句话不违反版权规定
+           required: true
+         - label: 我确认这句话适合公开分享
+           required: true
