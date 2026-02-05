@@ -5,7 +5,6 @@
   "installCommand": "npm install",
   "devCommand": "npm run dev",
   "env": {
-    "NEXT_PUBLIC_GITHUB_TOKEN": "@github_token",
     "NEXT_PUBLIC_GITHUB_OWNER": "FreemanKevin",
     "NEXT_PUBLIC_GITHUB_REPO": "judu"
   },

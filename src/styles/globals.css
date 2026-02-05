@@ -75,6 +75,27 @@ html {
   scroll-behavior: smooth;
 }
 
+/* 打字光标 */
+.typing-cursor::after {
+  content: '|';
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* 闪烁切换效果 */
+@keyframes flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.flash-transition {
+  animation: flash 0.3s ease-in-out;
+}
+
 /* 隐藏搜索清除按钮 */
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,

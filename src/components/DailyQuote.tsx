@@ -21,16 +21,21 @@ const sampleQuotes = [
 export default function DailyQuote() {
   const [quote, setQuote] = useState(sampleQuotes[0])
   const [isLoading, setIsLoading] = useState(false)
+  const [isFlashing, setIsFlashing] = useState(false)
   const { showToast } = useToast()
 
   const refreshQuote = () => {
     setIsLoading(true)
+    setIsFlashing(true)
     const randomQuote = sampleQuotes[Math.floor(Math.random() * sampleQuotes.length)]
     
     setTimeout(() => {
       setQuote(randomQuote)
       setIsLoading(false)
-    }, 300)
+      setTimeout(() => {
+        setIsFlashing(false)
+      }, 300)
+    }, 150)
   }
 
   const copyQuote = async () => {
@@ -87,7 +92,7 @@ export default function DailyQuote() {
           </div>
           
           <div className="space-y-6">
-            <h1 className={`font-serif text-3xl md:text-5xl font-semibold leading-relaxed text-ink-900 dark:text-paper-50 tracking-wide ${isLoading ? 'opacity-50' : 'opacity-100'} transition-opacity`}>
+            <h1 className={`font-serif text-3xl md:text-5xl font-semibold leading-relaxed text-ink-900 dark:text-paper-50 tracking-wide typing-cursor ${isLoading ? 'opacity-0' : 'opacity-100'} ${isFlashing ? 'flash-transition' : ''} transition-opacity duration-300`}>
               {quote.content}
             </h1>
             

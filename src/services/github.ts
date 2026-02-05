@@ -1,7 +1,6 @@
 import { Sentence, GitHubIssue } from '../utils/types'
 import { localDataService } from './localData'
 
-const GITHUB_TOKEN = process.env.NEXT_PUBLIC_GITHUB_TOKEN
 const GITHUB_OWNER = process.env.NEXT_PUBLIC_GITHUB_OWNER
 const GITHUB_REPO = process.env.NEXT_PUBLIC_GITHUB_REPO
 
@@ -12,15 +11,11 @@ class GitHubService {
   private isConfigured: boolean
 
   constructor() {
-    this.isConfigured = !!(GITHUB_TOKEN && GITHUB_OWNER && GITHUB_REPO)
+    this.isConfigured = !!(GITHUB_OWNER && GITHUB_REPO)
     
     this.headers = {
       'Accept': 'application/vnd.github.v3+json',
       'Content-Type': 'application/json',
-    }
-    
-    if (GITHUB_TOKEN) {
-      this.headers['Authorization'] = `token ${GITHUB_TOKEN}`
     }
     
     if (!this.isConfigured) {
