@@ -1,14 +1,12 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faScroll, faFeather, faHeart, faLightbulb, faFilm } from '@fortawesome/free-solid-svg-icons'
-import '@fortawesome/fontawesome-svg-core/styles.css'
+
 
 const categories = [
   { id: 'all', name: '全部', icon: null },
-  { id: 'classical', name: '古典', icon: faScroll },
-  { id: 'modern', name: '现代', icon: faFeather },
-  { id: 'love', name: '情感', icon: faHeart },
-  { id: 'philosophy', name: '哲思', icon: faLightbulb },
-  { id: 'movie', name: '影视', icon: faFilm }
+  { id: 'classical', name: '古典', icon: 'fa-scroll' },
+  { id: 'modern', name: '现代', icon: 'fa-feather' },
+  { id: 'love', name: '情感', icon: 'fa-heart' },
+  { id: 'philosophy', name: '哲思', icon: 'fa-lightbulb' },
+  { id: 'movie', name: '影视', icon: 'fa-film' }
 ]
 
 interface CategoryFilterProps {
@@ -30,7 +28,7 @@ export default function CategoryFilter({ currentCategory, onCategoryChange }: Ca
                 : 'bg-white dark:bg-ink-900 border border-ink-200 dark:border-ink-700 text-ink-600 dark:text-paper-300 hover:border-ink-400 dark:hover:border-paper-400'
             }`}
           >
-            {category.icon && <FontAwesomeIcon icon={category.icon} className="w-3 h-3 mr-1" />}
+            {category.icon && <i className={`fas ${category.icon} w-3 h-3 mr-1`}></i>}
             {category.name}
           </button>
         ))}

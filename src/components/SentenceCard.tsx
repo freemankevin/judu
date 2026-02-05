@@ -1,9 +1,6 @@
 import { useState } from 'react'
 import { Sentence } from '@/utils/types'
 import { useToast } from '@/hooks/useToast'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart, faCopy, faShareAlt, faQuoteLeft } from '@fortawesome/free-solid-svg-icons'
-import '@fortawesome/fontawesome-svg-core/styles.css'
 
 interface SentenceCardProps {
   sentence: Sentence
@@ -75,12 +72,12 @@ export default function SentenceCard({ sentence }: SentenceCardProps) {
           className="p-2 rounded-full bg-paper-100 dark:bg-ink-800 text-ink-600 dark:text-paper-300 hover:bg-paper-200 dark:hover:bg-ink-700"
           title="复制"
         >
-          <FontAwesomeIcon icon={faCopy} className="w-4 h-4" />
+          <i className="fas fa-copy w-4 h-4"></i>
         </button>
       </div>
       
       <div className="mb-4">
-        <FontAwesomeIcon icon={faQuoteLeft} className="w-8 h-8 text-paper-400 dark:text-ink-700" />
+        <i className="fas fa-quote-left w-8 h-8 text-paper-400 dark:text-ink-700"></i>
       </div>
       
       <p className="font-serif text-lg leading-relaxed text-ink-900 dark:text-paper-50 mb-6 line-clamp-4">
@@ -107,7 +104,7 @@ export default function SentenceCard({ sentence }: SentenceCardProps) {
               isLiked ? 'text-red-500' : 'text-ink-400 dark:text-paper-500 hover:text-red-500 dark:hover:text-red-400'
             }`}
           >
-            <FontAwesomeIcon icon={faHeart} className={`w-4 h-4 ${isLiked ? 'text-red-500' : ''}`} />
+            <i className={`fas fa-heart w-4 h-4 ${isLiked ? 'text-red-500' : ''}`}></i>
             <span className="text-xs">{likes}</span>
           </button>
           <button
@@ -117,7 +114,7 @@ export default function SentenceCard({ sentence }: SentenceCardProps) {
             }}
             className="text-ink-400 dark:text-paper-500 hover:text-ink-600 dark:hover:text-paper-300"
           >
-            <FontAwesomeIcon icon={faShareAlt} className="w-4 h-4" />
+            <i className="fas fa-share-alt w-4 h-4"></i>
           </button>
         </div>
       </div>

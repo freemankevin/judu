@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useTheme } from '@/hooks/useTheme'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMoon, faSun, faPlus, faSearch, faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
-import '@fortawesome/fontawesome-svg-core/styles.css'
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -41,7 +38,7 @@ export default function Navbar() {
           {/* 搜索框 - 桌面 */}
           <div className="hidden md:flex flex-1 max-w-md mx-8">
             <div className="relative w-full group">
-              <FontAwesomeIcon icon={faSearch} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 group-focus-within:text-ink-600 dark:group-focus-within:text-paper-400 transition-colors w-4 h-4" />
+              <i className="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 group-focus-within:text-ink-600 dark:group-focus-within:text-paper-400 transition-colors w-4 h-4"></i>
               <input
                 type="search"
                 placeholder="搜索句子、作者或标签..."
@@ -60,9 +57,9 @@ export default function Navbar() {
               aria-label="切换主题"
             >
               {theme === 'dark' ? (
-                <FontAwesomeIcon icon={faSun} className="w-5 h-5 text-paper-300" />
+                <i className="fas fa-sun w-5 h-5 text-paper-300"></i>
               ) : (
-                <FontAwesomeIcon icon={faMoon} className="w-5 h-5 text-ink-600" />
+                <i className="fas fa-moon w-5 h-5 text-ink-600"></i>
               )}
             </button>
             
@@ -70,7 +67,7 @@ export default function Navbar() {
               onClick={handleAddSentence}
               className="hidden sm:flex items-center space-x-2 px-4 py-2 bg-ink-900 dark:bg-paper-100 text-paper-50 dark:text-ink-900 rounded-full text-sm font-medium hover:shadow-lg hover:scale-105 transition-all"
             >
-              <FontAwesomeIcon icon={faPlus} className="w-4 h-4" />
+              <i className="fas fa-plus w-4 h-4"></i>
               <span>收录句子</span>
             </button>
             
@@ -79,9 +76,9 @@ export default function Navbar() {
               className="md:hidden p-2 rounded-lg hover:bg-ink-100 dark:hover:bg-ink-800"
             >
               {isMenuOpen ? (
-                <FontAwesomeIcon icon={faTimes} className="w-5 h-5 text-ink-600 dark:text-paper-300" />
+                <i className="fas fa-times w-5 h-5 text-ink-600 dark:text-paper-300"></i>
               ) : (
-                <FontAwesomeIcon icon={faBars} className="w-5 h-5 text-ink-600 dark:text-paper-300" />
+                <i className="fas fa-bars w-5 h-5 text-ink-600 dark:text-paper-300"></i>
               )}
             </button>
           </div>
@@ -92,7 +89,7 @@ export default function Navbar() {
       {isMenuOpen && (
         <div className="md:hidden px-4 pb-3 border-t border-ink-200 dark:border-ink-800">
           <div className="relative mt-3">
-            <FontAwesomeIcon icon={faSearch} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 w-4 h-4" />
+            <i className="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 w-4 h-4"></i>
             <input
               type="search"
               placeholder="搜索..."
@@ -105,7 +102,7 @@ export default function Navbar() {
             onClick={handleAddSentence}
             className="w-full mt-3 flex items-center justify-center space-x-2 px-4 py-2 bg-ink-900 dark:bg-paper-100 text-paper-50 dark:text-ink-900 rounded-lg text-sm font-medium"
           >
-            <FontAwesomeIcon icon={faPlus} className="w-4 h-4" />
+            <i className="fas fa-plus w-4 h-4"></i>
             <span>收录句子</span>
           </button>
         </div>

@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useToast } from '@/hooks/useToast' 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCalendarDay, faSyncAlt, faCopy, faShareAlt } from '@fortawesome/free-solid-svg-icons' 
-import '@fortawesome/fontawesome-svg-core/styles.css' 
 
 interface DailyQuoteProps {
   content: string
@@ -85,7 +82,7 @@ export default function DailyQuote() {
         
         <div className="relative z-10 text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center space-x-2 px-3 py-1 bg-paper-100 dark:bg-ink-800 rounded-full text-xs text-ink-600 dark:text-paper-400 mb-8">
-            <FontAwesomeIcon icon={faCalendarDay} className="text-sm" />
+            <i className="fas fa-calendar-day text-sm"></i>
             <span>每日一句</span>
             <span className="w-1 h-1 bg-ink-400 rounded-full"></span>
             <span>{formatDate()}</span>
@@ -113,20 +110,20 @@ export default function DailyQuote() {
               className="p-3 rounded-full bg-paper-100 dark:bg-ink-800 text-ink-600 dark:text-paper-300 hover:bg-paper-200 dark:hover:bg-ink-700 transition-all hover:rotate-180 duration-500 disabled:opacity-50"
               title="换一句"
             >
-              <FontAwesomeIcon icon={faSyncAlt} className={`text-base ${isLoading ? 'animate-spin' : ''}`} />
+              <i className={`fas fa-sync-alt text-base ${isLoading ? 'animate-spin' : ''}`}></i>
             </button>
             <button
               onClick={copyQuote}
               className="px-6 py-3 rounded-full bg-ink-900 dark:bg-paper-100 text-paper-50 dark:text-ink-900 font-medium hover:shadow-hover transition-all flex items-center space-x-2 group"
             >
-              <FontAwesomeIcon icon={faCopy} className="text-sm group-hover:scale-110 transition-transform" />
+              <i className="fas fa-copy text-sm group-hover:scale-110 transition-transform"></i>
               <span>复制句子</span>
             </button>
             <button
               onClick={shareQuote}
               className="p-3 rounded-full bg-paper-100 dark:bg-ink-800 text-ink-600 dark:text-paper-300 hover:bg-paper-200 dark:hover:bg-ink-700 transition-all"
             >
-              <FontAwesomeIcon icon={faShareAlt} className="text-base" />
+              <i className="fas fa-share-alt text-base"></i>
             </button>
           </div>
         </div>
