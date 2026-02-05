@@ -154,7 +154,9 @@ export default function Home() {
                 </a>
                 <span className="w-1 h-1 bg-ink-400 dark:bg-paper-600 rounded-full"></span>
                 <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="hover:text-ink-900 dark:hover:text-paper-100 transition-colors">
-                  <i className="fa-brands fa-vercel text-lg"></i>
+                  <svg height="16" viewBox="0 0 75 65" fill="currentColor" className="text-ink-500 dark:text-paper-400 hover:text-ink-900 dark:hover:text-paper-100">
+                    <path d="M37.59.25l36.95 64H.64l36.95-64z"></path>
+                  </svg>
                 </a>
               </div>
             </div>
