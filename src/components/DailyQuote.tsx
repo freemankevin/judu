@@ -88,8 +88,8 @@ export default function DailyQuote() {
             <span>{formatDate()}</span>
           </div>
           
-          <div className="space-y-6">
-            <h1 className={`font-serif text-3xl md:text-5xl font-semibold leading-relaxed text-ink-900 dark:text-paper-50 tracking-wide typing-cursor ${isLoading ? 'opacity-0' : 'opacity-100'} ${isFlashing ? 'flash-transition' : ''} transition-opacity duration-300`}>
+          <div className="space-y-8">
+            <h1 className={`font-serif text-4xl md:text-5xl font-semibold leading-relaxed text-ink-900 dark:text-paper-50 tracking-wide typing-cursor ${isLoading ? 'opacity-0' : 'opacity-100'} ${isFlashing ? 'flash-transition' : ''} transition-opacity duration-300`}>
               {quote.content}
             </h1>
             

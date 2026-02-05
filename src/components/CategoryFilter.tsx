@@ -22,21 +22,21 @@ export default function CategoryFilter({ currentCategory, onCategoryChange }: Ca
           <button
             key={category.id}
             onClick={() => onCategoryChange(category.id)}
-            className={`filter-btn px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center space-x-1 ${
+            className={`filter-btn px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all flex items-center space-x-1 ${
               currentCategory === category.id
                 ? 'bg-ink-900 dark:bg-paper-100 text-paper-50 dark:text-ink-900'
                 : 'bg-white dark:bg-ink-900 border border-ink-200 dark:border-ink-700 text-ink-600 dark:text-paper-300 hover:border-ink-400 dark:hover:border-paper-400'
             }`}
           >
-            {category.icon && <i className={`fas ${category.icon} w-3 h-3 mr-1`}></i>}
+            {category.icon && <i className={`fas ${category.icon} mr-1`}></i>}
             {category.name}
           </button>
         ))}
         <button
           onClick={() => {}}
-          className="px-4 py-2 rounded-full text-sm font-semibold text-ink-400 hover:text-ink-600 dark:hover:text-paper-200 whitespace-nowrap transition-all"
+          className="px-4 py-2 rounded-full text-sm font-medium text-ink-400 hover:text-ink-600 dark:hover:text-paper-200 whitespace-nowrap transition-all"
         >
-          更多 <span className="text-xs">▼</span>
+          更多 <i className="fas fa-chevron-down text-xs"></i>
         </button>
       </div>
     </section>

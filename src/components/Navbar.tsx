@@ -32,7 +32,7 @@ export default function Navbar() {
             <div className="w-8 h-8 bg-ink-900 dark:bg-paper-100 rounded-lg flex items-center justify-center">
               <span className="text-paper-50 dark:text-ink-900 font-serif font-bold text-lg">句</span>
             </div>
-            <span className="font-serif text-xl font-semibold tracking-wide">句读</span>
+            <span className="font-serif text-xl font-medium tracking-wide">句读</span>
           </div>
 
           {/* 搜索框 - 桌面 */}

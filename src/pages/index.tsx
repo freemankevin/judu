@@ -148,15 +148,15 @@ export default function Home() {
                 <span className="text-ink-400 dark:text-paper-500 text-sm">文字收藏与分享</span>
               </div>
               
-              <div className="flex items-center space-x-6 text-sm text-ink-500 dark:text-paper-400">
-                <a href="https://github.com/FreemanKevin/judu" className="hover:text-ink-900 dark:hover:text-paper-100 transition-colors">GitHub</a>
-                <a href="/api/sentences" className="hover:text-ink-900 dark:hover:text-paper-100 transition-colors">数据接口</a>
-                <a href="#" className="hover:text-ink-900 dark:hover:text-paper-100 transition-colors">关于</a>
+              <div className="flex items-center space-x-4 text-sm text-ink-500 dark:text-paper-400">
+                <a href="https://github.com/FreemanKevin/judu" target="_blank" rel="noopener noreferrer" className="hover:text-ink-900 dark:hover:text-paper-100 transition-colors">
+                  <i className="fa-brands fa-github text-lg"></i>
+                </a>
+                <span className="w-1 h-1 bg-ink-400 dark:bg-paper-600 rounded-full"></span>
+                <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="hover:text-ink-900 dark:hover:text-paper-100 transition-colors">
+                  <i className="fa-brands fa-vercel text-lg"></i>
+                </a>
               </div>
-              
-              <p className="text-xs text-ink-400 dark:text-paper-600">
-                © 2024 句读. 数据存储于 GitHub.
-              </p>
             </div>
           </div>
         </footer>

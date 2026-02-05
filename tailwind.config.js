@@ -13,7 +13,7 @@ module.exports = {
     extend: {
       fontFamily: {
         serif: ['"Noto Serif SC"', 'serif'],
-        sans: ['"Noto Sans SC"', 'sans-serif'],
+        sans: ['"Inter"', 'sans-serif'],
       },
       colors: {
         paper: {
